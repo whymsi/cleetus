@@ -1,3 +1,13 @@
+### Database ###
+*.accdb
+*.db
+*.dbf
+*.mdb
+*.pdb
+*.sqlite3
+*.db-shm
+*.db-wal
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -172,7 +182,3 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-
-.vscode/
-embeds.py
-prefixes.db
