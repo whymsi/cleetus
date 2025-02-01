@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord import Guild
 
 class Misc(commands.Cog):
     def __init__(self, bot):
@@ -48,6 +49,21 @@ class Misc(commands.Cog):
         else:
             await ctx.send(embed=no_ba_embed)
 
+    @commands.command(name="serverinfo", aliases=['server'])
+    async def server_info(self, ctx, member: discord.Member = None):
+        if not member:
+            member = ctx.author
+        guild = member.guild
+        server_embed = discord.Embed(
+            title = f"{guild.name}'s info",
+            description =f"**Owner:** {guild.owner}\n"
+                        f"**ID:** {guild.id}\n"
+                        f"**Roles:** {len(guild.roles) - 1}\n"
+                        f"**Members:** {len(guild.members)}\n"
+                        f"**Creation Date:** {guild.created_at.strftime('%m/%d/%Y')}",
+            color = discord.Color.blue()
+        ).set_thumbnail(url = guild.icon.url if guild.icon else "")
+        await ctx.send(embed=server_embed)
 
 async def setup(bot):
     await bot.add_cog(Misc(bot))

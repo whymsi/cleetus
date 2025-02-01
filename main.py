@@ -32,9 +32,9 @@ async def on_ready():
         await bot.db.commit()
 
         await load()
-
-
+    
     await bot.tree.sync()
+    print("Cogs loaded!")
 
     print("Database connected.")
 
