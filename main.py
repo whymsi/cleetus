@@ -26,6 +26,7 @@ async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
     bot.db = await aiosqlite.connect("prefixes.db")
+    
     async with bot.db.cursor() as cursor:
         await cursor.execute('CREATE TABLE IF NOT EXISTS prefixes (prefix TEXT, guild ID)')
         await bot.db.commit()
