@@ -2,6 +2,10 @@ import discord
 from discord.ext import commands
 from discord import Guild
 
+from embeds import *
+
+OWNER_ID = 123456789012345678
+
 class Misc(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -54,16 +58,49 @@ class Misc(commands.Cog):
         if not member:
             member = ctx.author
         guild = member.guild
-        server_embed = discord.Embed(
-            title = f"{guild.name}'s info",
-            description =f"**Owner:** {guild.owner}\n"
-                        f"**ID:** {guild.id}\n"
+        humans = [member for member in ctx.guild.members if not member.bot]
+        bots = [member for member in ctx.guild.members if member.bot]
+        server_embed = discord.Embed(title = f"{guild.name}'s info",
+            description=
                         f"**Roles:** {len(guild.roles) - 1}\n"
                         f"**Members:** {len(guild.members)}\n"
                         f"**Creation Date:** {guild.created_at.strftime('%m/%d/%Y')}",
             color = discord.Color.blue()
+
         ).set_thumbnail(url = guild.icon.url if guild.icon else "")
+        server_embed.add_field(name="**Owner**", value=f"{guild.owner}", inline=True)
+        server_embed.add_field(
+            name=f"**Members**",
+            value=
+                f"""**Total**: {guild.member_count}
+                **Humans**: {len(humans)}
+                **Bots**: {len(bots)}""",
+            inline=True)
+        server_embed.add_field(
+            name="**Channels**",
+            value=f"**Text:** {len([channel for channel in guild.channels if channel.type == discord.ChannelType.text])}\n"
+                    f"**Voice:** {len([channel for channel in guild.channels if channel.type == discord.ChannelType.voice])}\n"
+                    f"**Category:** {len([channel for channel in guild.channels if channel.type == discord.ChannelType.category])}\n",
+            inline=True)
+        server_embed.add_field(
+            name="**Emojis**",
+            value=f"**Total:** {len(guild.emojis)}\n"
+                    f"**Custom:** {len([emoji for emoji in guild.emojis if not emoji.managed])}\n"
+                    f"**Managed:** {len([emoji for emoji in guild.emojis if emoji.managed])}",
+                inline=True)
+            
         await ctx.send(embed=server_embed)
+
+    @commands.hybrid_command(name="info", descrption="Look up a discord member!")
+    async def information(self, ctx, member: discord.Member = None):
+        if not member:
+            member = ctx.author
+        info_embed = discord.Embed(
+            description="hello"
+        ).set_author(name=f"{member.display_name} ({member.id})", icon_url=member.avatar)
+        
+        await ctx.send(embed=info_embed)
+
 
 async def setup(bot):
     await bot.add_cog(Misc(bot))

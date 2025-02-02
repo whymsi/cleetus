@@ -4,8 +4,9 @@ import os
 from discord.ext import commands
 from dotenv import load_dotenv
 import aiosqlite
-
 from db import *
+from cogs.help import EmbedHelpCommand
+
 
 load_dotenv()
 TOKEN = os.getenv('BOT_TOKEN')
@@ -62,5 +63,6 @@ async def shutdown(ctx):
         print(f"Error during shutdown: {e}")
         await ctx.send(f"Error occurred while shutting down: {e}")
 
+bot.help_command = EmbedHelpCommand()
 
 bot.run(TOKEN)

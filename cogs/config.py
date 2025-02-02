@@ -6,7 +6,7 @@ class Config(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_command(name='setprefix', description="Set a custom prefix for the server.")
+    @commands.command(name='setprefix', description="Set a custom prefix for the server.", aliases=['prefix'],)
     @commands.has_permissions(administrator=True)  # Only allow administrators to change the prefix
     async def setprefix(self, ctx, prefix=None):
         """Sets a custom prefix for the current server."""
